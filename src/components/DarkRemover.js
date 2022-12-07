@@ -12,19 +12,30 @@ export default function DarkRemover() {
   }
 
   return (
-    <div className="bg-gray-800 py-12 h-screen">
-      <div className="flex gap-2 justify-center pb-4">
-        <img
-          src="https://flowbite.com/images/logo.svg"
-          alt="https://flowbite.com/images/logo.svg"
-        />
-        <span className="text-3xl font-medium text-white">
-          Flowbite Converter
-        </span>
+    <div className="bg-gray-800 py-10 h-screen flex flex-col justify-between">
+      <div>
+        <div className="flex gap-2 justify-center pb-4">
+          <img
+            src="https://flowbite.com/images/logo.svg"
+            alt="https://flowbite.com/images/logo.svg"
+          />
+          <span className="text-3xl font-medium text-white">
+            Flowbite Converter
+          </span>
+        </div>
+        <div className="max-w-screen-xl mx-auto flex flex-col xl:flex-row justify-center items-center lg:items-start gap-8 lg:gap-16 p-4">
+          <InputCode input={input} handleInput={handleInput}></InputCode>
+          <ExecuteCode filter={input}></ExecuteCode>
+        </div>
       </div>
-      <div className="max-w-screen-xl mx-auto flex flex-col xl:flex-row justify-center items-center lg:items-start gap-8 lg:gap-16 p-4">
-        <InputCode input={input} handleInput={handleInput}></InputCode>
-        <ExecuteCode filter={input}></ExecuteCode>
+      <div className="text-gray-200 text-center py-4">
+        Copyright@2020-2021 All right reserved. Developer{" "}
+        <a
+          href="https://fiverr.com/web__architect"
+          className="text-gray-200 hover underline"
+        >
+          Santo
+        </a>
       </div>
     </div>
   );
