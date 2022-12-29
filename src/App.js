@@ -1,9 +1,5 @@
-import logo from "./logo.svg";
-import "./App.css";
 import DarkRemover from "./components/DarkRemover";
 
-function App() {
+export default function App() {
   return <DarkRemover></DarkRemover>;
 }
-
-export default App;
