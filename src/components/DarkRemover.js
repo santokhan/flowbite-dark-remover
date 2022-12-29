@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Alert from "./Alert";
 import NavBar from "./NavBar";
 
 export default function DarkRemover() {
@@ -24,7 +23,6 @@ export default function DarkRemover() {
           <ExecuteCode input={input.value}></ExecuteCode>
         </div>
       </div>
-      <Alert></Alert>
     </div>
   );
 }
@@ -104,12 +102,22 @@ function Filter(input) {
 
     function loop(elements) {
       for (const element of elements) {
-        if (element.className) {
-          // console.log(element.classList);
-          element.className = Remover(element.className);
-        }
-        if (element.children && element.children.length > 0) {
-          loop(element.children);
+        if (
+          element.tagName === "svg" ||
+          element.tagName === "path" ||
+          element.tagName === "circle" ||
+          element.tagName === "rect" ||
+          element.tagName === "polygon"
+        ) {
+          element.className.baseVal = Remover(element.className.baseVal);
+        } else {
+          if (element.className) {
+            // console.log(element.classList);
+            element.className = Remover(element.className);
+          }
+          if (element.children && element.children.length > 0) {
+            loop(element.children);
+          }
         }
       }
     }
@@ -121,17 +129,22 @@ function Filter(input) {
       htmls += e.outerHTML;
     }
     // console.log(htmls);
-    return RenameClass(htmls);
+    return Renaming(htmls);
   }
 }
 function Remover(classes) {
-  if (classes.includes(" ")) {
-    return classes
-      .split(" ")
-      .filter((e) => !e.includes("dark:"))
-      .join(" ");
-  } else {
-    return classes;
+  try {
+    if (classes.includes(" ")) {
+      return classes
+        .split(" ")
+        .filter((e) => !e.includes("dark:"))
+        .join(" ");
+    } else {
+      return classes;
+    }
+  } catch (error) {
+    console.log({ classes });
+    console.log(error);
   }
 }
 function ClassListRemover(classList) {
@@ -141,13 +154,24 @@ function ClassListRemover(classList) {
       const element = classList[key];
 
       // change md: to dark:
-      if (element.includes("dark:") === false) {
+      if (!element.includes("dark:")) {
         filter[key] = element;
       }
     }
   }
+  console.log(filter);
   return filter;
 }
-function RenameClass(htmls) {
-  return htmls.replace(/class=/g, "className=");
+function Renaming(htmls) {
+  htmls = htmls
+    .replace(/class=/g, "className=")
+    .replace(/aria-hidden=/g, "ariaHidden=")
+    .replace(/value=/g, "defaultValue=")
+    .replace(/for=/g, "htmlFor=")
+    .replace(/stroke-width=/g, "strokeWidth=")
+    .replace(/clip-rule=/g, "clipRule=")
+    .replace(/fill-rule=/g, "fillRule=")
+    .replace(/stroke-linecap=/g, "strokeLinecap=")
+    .replace(/stroke-linejoin=/g, "strokeLinejoin=");
+  return htmls;
 }
